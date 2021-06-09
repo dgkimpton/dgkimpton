@@ -59,5 +59,5 @@ git_parse_branch() {
     if [[ $branch != "" ]]; then echo "($branch)"; else echo ""; fi
 }
 
-PS1='\n\[\033[32m\]\u@\h \[\033[33m\]\w\[\033[35m\] `git_parse_branch`\n\[\033[32m\]└─▶\[\033[0m\] $ '
+PS1='\n\[\033[32m\]\u@\h \[\033[33m\]\w\[\033[35m\] `git_parse_branch`\n\[\033[90m\]\D{%T}\[\033[32m\] └─▶\[\033[0m\] $ '
 
