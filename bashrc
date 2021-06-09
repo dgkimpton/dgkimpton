@@ -16,7 +16,7 @@ if test -f ~/dgkimpton/ssh-key-list; then
 	keys=$(cat ~/dgkimpton/ssh-key-list)
 	for key in $keys
 	do
-		ssh-add $key
+		ssh-add "${key/\~/$HOME}"
 	done
 fi
 
