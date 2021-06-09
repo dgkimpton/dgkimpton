@@ -12,6 +12,7 @@ Feel free to look around, peruse my occasional blogs, or check out my social med
 
 ### Notes to self
 <details><summary>Steps for setting up a new computer </summary>
+
 clone this repo into home directory  
 ```
 ssh-keygen -t ed25519 -C "dgkimpton@gmail.com"
