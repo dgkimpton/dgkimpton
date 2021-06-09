@@ -1,0 +1,56 @@
+if [[ $# -ne 3 ]]; then
+    echo "must provide <repo-name> <server-ip> <storage-path> as command line arguments in that order"
+	echo "e.g. make-repo test 192.168.1.2 /mnt/router/repositories"
+	exit 1
+fi
+
+#repo=test
+repo="$1"
+#server=192.168.1.2
+server="$2"
+#path=/mnt/router/repositories
+path="$3"
+
+echo "will create repo ${repo}.git at ${server}:${path}/${repo}.git"
+echo
+read -p "Are you sure? (y/n)" -n 1 -r
+echo
+
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1 
+fi
+
+if [ -d "${path}/${repo}.git" ]; then
+   echo "repo path already exists, stopping"
+   exit 1
+fi
+
+if [ -d "/tmp/${repo}" ]; then
+   echo "necessary temp path /tmp/${repo} already exists, stopping"
+   exit 1
+fi
+
+initPath=`pwd`
+
+mkdir "${path}/${repo}.git"
+cd "${path}/${repo}.git"
+sudo git init --bare
+git symbolic-ref HEAD refs/heads/main
+
+mkdir "/tmp/${repo}"
+cd "/tmp/${repo}"
+git clone ${server}:${path}/${repo}.git .
+
+touch README.md
+git add README.md
+git commit -m "initialise"
+git branch -m master main
+git push -u origin main
+
+cd "$initPath"
+rm -rf "/tmp/${repo}"
+
+echo "created ${repo} repo, clone with:"
+echo "git clone ${server}:${path}/${repo}.git"
+
