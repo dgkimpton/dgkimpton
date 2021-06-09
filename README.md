@@ -11,7 +11,7 @@ Feel free to look around, peruse my occasional blogs, or check out my social med
 
 
 ### Notes to self
-Setting up a new computer  
+<details><summary>Steps for setting up a new computer </summary>
 clone this repo into home directory  
 ```
 ssh-keygen -t ed25519 -C "dgkimpton@gmail.com"
@@ -26,4 +26,4 @@ echo '~/.ssh/github' >> ~/dgkimpton/ssh-key-list
 source ~/.bashrc
 ```
 To add more ssh-keys be sure to add the keyfile path to the ssh-key-list on a new line
-
+</details>
