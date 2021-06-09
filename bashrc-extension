@@ -1,0 +1,3 @@
+if test -f ~/dgkimpton/bashrc; then
+	source ~/dgkimpton/bashrc
+fi
