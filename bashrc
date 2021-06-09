@@ -58,6 +58,11 @@ git_parse_branch() {
     local branch=$(git symbolic-ref --short HEAD 2>/dev/null)
     if [[ $branch != "" ]]; then echo "($branch)"; else echo ""; fi
 }
+get_time() {
+	local time=`date +'%H:%M'`
+	local username=`whoami`
+	printf %-${#username}s "$time"
+}
 
-PS1='\n\[\033[32m\]\u@\h \[\033[33m\]\w\[\033[35m\] `git_parse_branch`\n\[\033[90m\]\D{%H:%M}\[\033[32m\] └─▶\[\033[0m\] $ '
+PS1='\n\[\033[32m\]\u@\h \[\033[33m\]\w\[\033[35m\] `git_parse_branch`\n\[\033[90m\]`get_time`\[\033[32m\]└─▶\[\033[0m\] $ '
 
