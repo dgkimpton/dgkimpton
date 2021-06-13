@@ -83,5 +83,6 @@ export default {
 ```
 
 
-Interesting blogs:  
+## Interesting Reads    
 https://medium.com/@justintulk  
+https://medium.com/@justintulk/solve-module-import-aliasing-for-webpack-jest-and-vscode-74007ce4adc9  
