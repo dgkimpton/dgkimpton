@@ -1,3 +1,7 @@
+## eslint
+`/* eslint-disable-line no-labels  */`  
+`/* global page */`  
+
 ## git
 Excluding a file from a git diff `git diff -- ':!**./excludeme.js'`  
 
