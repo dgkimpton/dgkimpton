@@ -32,9 +32,15 @@ https://github.com/rollup/rollup  and https://rollupjs.org/guide/en/
 **rollup-plugin-terser** : https://github.com/TrySound/rollup-plugin-terser  
 
 ## testing
+
+### documentation
 **jest** : https://jestjs.io/   
+mocking: https://jestjs.io/docs/mock-functions  
+puppeteer: https://pptr.dev/  
+
+### setup
 **@babel/preset-env** : https://babeljs.io/docs/en/babel-preset-env  
-**puppeteer** : https://github.com/smooth-code/jest-puppeteer/tree/master and https://github.com/puppeteer/puppeteer https://pptr.dev/  
+**puppeteer** : https://github.com/smooth-code/jest-puppeteer/tree/master and https://github.com/puppeteer/puppeteer 
 **http-server** : https://github.com/http-party/http-server  
 
 **jest** requires a **babel** config in `package.json`  
