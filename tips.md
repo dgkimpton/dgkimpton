@@ -2,8 +2,8 @@
 Excluding a file from a git diff `git diff -- ':!**./excludeme.js'`  
 
 ## vscode
-using **jsconfig** : https://code.visualstudio.com/docs/languages/jsconfig
-using **editorconfig** : https://editorconfig.org/
+using **jsconfig** : https://code.visualstudio.com/docs/languages/jsconfig  
+using **editorconfig** : https://editorconfig.org/  
 
 ### plugins
 **editorconfig** support https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig  
