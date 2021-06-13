@@ -1,4 +1,5 @@
-Excluding a file from a git diff `git diff -- ':!**./excludeme.js'`
+## git
+Excluding a file from a git diff `git diff -- ':!**./excludeme.js'`  
 
 ## vscode
 using jsconfig: https://code.visualstudio.com/docs/languages/jsconfig
