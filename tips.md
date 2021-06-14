@@ -11,7 +11,8 @@ Reverting a commit `git reset <commit_hash>` or harsher `git revert <commit_hash
 using **jsconfig** : https://code.visualstudio.com/docs/languages/jsconfig  https://www.typescriptlang.org/tsconfig  
 using **editorconfig** : https://editorconfig.org/  
 
-it is possible to prevent vscode complaining about unused variables/imports if they are private (i.e. prefixed with _ ), e.g. `import { thing as _mocked } from 'module'`
+it is possible to prevent vscode complaining about unused variables/imports if they are private (i.e. prefixed with _ ),  
+e.g. `import { thing as _mocked } from 'module'`
 
 ### plugins
 **editorconfig** support https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig  
