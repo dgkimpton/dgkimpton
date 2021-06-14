@@ -5,9 +5,10 @@ https://eslint.org/
 
 ## git
 Excluding a file from a git diff `git diff -- ':!**./excludeme.js'`  
+Reverting a commit `git reset <commit_hash>` or harsher `git revert <commit_hash>`  
 
 ## vscode
-using **jsconfig** : https://code.visualstudio.com/docs/languages/jsconfig  
+using **jsconfig** : https://code.visualstudio.com/docs/languages/jsconfig  https://www.typescriptlang.org/tsconfig
 using **editorconfig** : https://editorconfig.org/  
 
 ### plugins
@@ -82,6 +83,8 @@ export default {
 }
 ```
 
+## Bash
+last return value `echo $?`  
 
 ## Interesting Reads    
 https://medium.com/@justintulk  
