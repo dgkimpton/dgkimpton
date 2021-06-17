@@ -4,7 +4,7 @@ https://eslint.org/
 `/* global page */`  
 
 ## git
-Excluding a file from a git diff `git diff :!**excludeme.js'`  
+Excluding a file from a git diff `git diff ':!**excludeme.js'`  
 Reverting a commit `git reset <commit_hash>` or harsher `git revert <commit_hash>`  
 
 ## vscode
