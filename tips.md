@@ -95,3 +95,6 @@ last return value `echo $?`
 ## Interesting Reads    
 https://medium.com/@justintulk  
 https://medium.com/@justintulk/solve-module-import-aliasing-for-webpack-jest-and-vscode-74007ce4adc9  
+
+## Handy posts
+https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
