@@ -13,7 +13,7 @@ Reverting a commit `git reset <commit_hash>` or harsher `git revert <commit_hash
 Setting up meld
 ```
 git config --global merge.tool meld
-git config --global mergetool.meld.path "C:\Program Files (x86)\Meld\Meld.exe"
+git config --global mergetool.meld.path "C:\Users\duncan\AppData\Local\Programs\Meld\Meld.exe"
 ```
 
 Interactively merging a stash back into the branch
