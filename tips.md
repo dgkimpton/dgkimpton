@@ -10,6 +10,16 @@ https://eslint.org/
 Excluding a file from a git diff `git diff ':!**excludeme.js'`  
 Reverting a commit `git reset <commit_hash>` or harsher `git revert <commit_hash>`  
 
+Setting up meld
+```
+git config --global merge.tool meld
+git config --global mergetool.meld.path "C:\Program Files (x86)\Meld\Meld.exe"
+```
+
+Interactively merging a stash back into the branch
+```git difftool -d stash@{0}```
+* note - only really works with a just made stash
+
 ## vscode
 using **jsconfig** : https://code.visualstudio.com/docs/languages/jsconfig  https://www.typescriptlang.org/tsconfig  
 using **editorconfig** : https://editorconfig.org/  
