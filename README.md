@@ -18,6 +18,10 @@ clone this repo into home directory
 ssh-keygen -t ed25519 -C "dgkimpton@gmail.com"
 ```
 enter `~/.ssh/github`
+
+  go to https://github.com/settings/keys
+  and add the key from 'cat .ssh/github.pub'
+    
 ```
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/github
