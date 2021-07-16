@@ -31,6 +31,16 @@ git clone git@github.com:dgkimpton/dgkimpton.git
 cat ~/dgkimpton/bashrc-extension >> ~/.bashrc
 echo '~/.ssh/github' >> ~/dgkimpton/ssh-key-list
 source ~/.bashrc
+git config --global user.name "Duncan Kimpton"
+git config --global user.email dgkimpton@users.noreply.github.com
 ```
 To add more ssh-keys be sure to add the keyfile path to the ssh-key-list on a new line
+  
+On WSL also setup as follows
+  create `/etc/wsl.conf`
+```
+[interop]
+appendWindowsPath = false
+```
+Then restart WSL2 with command wsl --shutdown in Windows. 
 </details>
