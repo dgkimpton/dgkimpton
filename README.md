@@ -49,6 +49,7 @@ Installing + upgrading node+npm
   sudo apt update
   sudo apt install nodejs
   sudo apt install npm
+  npm cache clean -f
   sudo npm install -g n
   sudo n latest
   sudo npm install -g npm@latest
