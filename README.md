@@ -42,5 +42,15 @@ On WSL also setup as follows
 [interop]
 appendWindowsPath = false
 ```
-Then restart WSL2 with command wsl --shutdown in Windows. 
+Then restart WSL2 with command wsl --shutdown in Windows.  
+  
+Installing + upgrading node+npm
+```
+  sudo apt update
+  sudo apt install nodejs
+  sudo apt install npm
+  sudo npm install -g n
+  sudo n latest
+  sudo npm install -g npm@latest
+```
 </details>
