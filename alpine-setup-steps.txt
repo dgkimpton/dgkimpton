@@ -1,0 +1,209 @@
+WARNING:
+Backup /etc/letsencrypt entirely
+
+
+AS ROOT
+  vi ~/.inputrc
+    # add:
+		set enable-bracketed-paste off
+    # this fixes issues with windows powershell terminal copy/paste
+  vi /etc/motd
+    # delete contents
+  apk add sudo
+  vi /etc/apk/repositories 
+    # uncomment the community source
+  apk update
+  apk upgrade
+  apk add sudo
+  visudo -f /etc/sudoers.d/duncan
+    # add:
+		duncan  ALL=(ALL) ALL
+  apk add samba
+  vi /etc/samba/smb.conf 
+    # uncomment browsable homes
+  smbpasswd -a duncan
+  rc-update add samba
+  rc-service samba start
+    # on Windows, 
+		regedit
+		Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters
+		add as a DWORD
+		DirectoryCacheLifetime=0
+  apk add bash
+  apk add shadow
+  chsh duncan
+    # use
+		/bin/bash
+  su duncan
+
+AS DUNCAN
+  vi ~/.profile
+   # add:
+		if [ -n "$BASH_VERSION" ]; then
+			# include .bashrc if it exists
+			if [ -f "$HOME/.bashrc" ]; then
+				. "$HOME/.bashrc"
+			fi
+		fi
+  vi ~/.bashrc
+    # add:
+		alias ll="ls -alh"
+		alias shutdown="sudo -k poweroff"
+  exit
+
+AS DUNCAN
+  sudo apk update
+  sudo apk add rustup
+  rustup-init
+  sudo apk add build-base
+  sudo apk add curl
+  sudo apk add gcc
+  sudo apk add make
+  sudo apk add openssl
+  sudo apk add openssl-dev
+  sudo apk add openssl-libs-static
+  sudo apk add pkgconfig
+  cargo install sqlx-cli
+  sudo apk add ca-certificates
+  sudo apk add docker
+  sudo apk add docker-rootless-extras
+  sudo apk add docker-cli-compose
+  sudo vi /etc/rc.conf
+    # uncomment rc_cgroup_mode="unified"
+  sudo rc-update add cgroups default
+  sudo apk add shadow-subids
+  sudo vi /etc/subuid
+    # add:
+		duncan:100000:65536
+  sudo vi /etc/subgid
+    # add:
+		duncan:100000:65536
+  sudo vi /etc/init.d/docker-rootless
+    # add:
+		#!/sbin/openrc-run
+
+		description="Rootless Docker daemon"
+
+		: ${user:?"set user in /etc/conf.d/${RC_SVCNAME}"}
+		: ${home:="/home/${user}"}
+
+		uid="$(id -u "${user}")"
+
+		command="/usr/bin/dockerd-rootless"
+		command_user="${user}"
+		command_background="yes"
+		pidfile="/run/${RC_SVCNAME}.pid"
+		output_log="${home}/.local/share/docker/dockerd.log"
+		error_log="${home}/.local/share/docker/dockerd.log"
+
+		depend() {
+			need cgroups
+			after net
+		}
+
+		start_pre() {
+			checkpath -d "/run/user"
+			checkpath -d -m 700 -o "${user}:${user}" "/run/user/${uid}"
+			checkpath -d -m 700 -o "${user}:${user}" "${home}/.local/share/docker"
+		}
+
+		start_stop_daemon_args="
+			--env HOME=${home}
+			--env USER=${user}
+			--env XDG_RUNTIME_DIR=/run/user/${uid}
+		"
+  sudo chmod +x /etc/init.d/docker-rootless
+  sudo ln -s /etc/init.d/docker-rootless /etc/init.d/docker-rootless-duncan
+  sudo vi /etc/conf.d/docker-rootless-duncan
+    # add:
+		# /etc/conf.d/docker-rootless-duncan
+		user="duncan"
+		home="/home/duncan"
+  sudo rc-update add docker-rootless-duncan default
+  sudo service docker-rootless-duncan start
+  vi ~/.bashrc
+    # add:
+		export XDG_RUNTIME_DIR=/run/user/$(id -u)
+		export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
+		export SCW_DEFAULT_REGION="nl-ams"
+		export SCW_DEFAULT_ZONE="nl-ams-1"
+  su
+    echo https://downloads.1password.com/linux/alpinelinux/stable/ >> /etc/apk/repositories
+    wget https://downloads.1password.com/linux/keys/alpinelinux/support@1password.com-61ddfc31.rsa.pub -P /etc/apk/keys
+    apk update
+    apk add 1password-cli
+    exit
+  sudo apk add git
+  git config --global user.name "Duncan Kimpton"
+  git config --global user.email dgkimpton@users.noreply.github.com
+  
+  # follow setup steps at https://github.com/dgkimpton/
+  
+  sudo apk add fontconfig ttf-dejavu
+  sudo apk add font-ibm-plex-mono-nerd
+  
+   sudo cat >/usr/share/fontconfig/conf.avail/99-blexmono.conf <<'EOF'
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <alias>
+    <family>monospace</family>
+    <prefer>
+      <family>Blex Mono Nerd Font Mono</family>
+      <family>Blex Mono Nerd Font</family>
+    </prefer>
+  </alias>
+</fontconfig>
+EOF
+  sudo ln -s /usr/share/fontconfig/conf.avail/99-blexmono.conf /etc/fonts/conf.d/52-blexmono.conf
+  sudo fc-cache -fv
+  sudo fc-match monospace
+  
+  sudo vi /etc/ssh/sshd_config
+    # change from no to yes for
+		AllowTcpForwarding yes
+		X11Forwarding yes
+  
+  sudo vi ~/.ssh/authorized_keys
+    # add:
+		ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIUhgwshq0cfva4GYvNUAU63+sXtUXvcWUNjrUxgYH16 duncan@liquid-glass
+  
+  sudo apk add dbus
+  sudo apk add dbus-x11
+  sudo apk add firefox
+  sudo apk add git-cola
+
+  rustup component add llvm-tools
+  cargo install ver-stub-tool
+  sudo apk add certbot
+  
+  as_wet  # this from the bash_rc extensions
+  
+  # TODO: restore /etc/letsencrypt then update wet test env certificate with ./env-test/make_certs.sh
+  # or
+  su
+    certbot certonly --manual --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory -d test.development.wet.cx
+    exit
+  
+   curl -s https://raw.githubusercontent.com/scaleway/scaleway-cli/master/scripts/get.sh | sh
+   scw init
+  
+  # TODO: figure out why getting the access key / secret from 1password didn't work
+   docker login $(wread op://wet/Container/general/docker_image) -u nologin --password-stdin <<< "6d151660-d848-46ad-b7ce-c400f25154d5"
+  
+  sudo apk add bind-tools
+  
+  sudo apk add s3fs-fuse
+  vi ~/.passwd-s3fs
+    # add api_access_key:api_access_secret
+    # make sure the api key hasn't expired on scaleway
+  chmod 600 ~/.passwd-s3fs
+  echo user_allow_other | sudo tee -a /etc/fuse.conf
+  
+  s3fs reactiongame /home/duncan/s3/reactiongame -o passwd_file=/home/duncan/.passwd-s3fs  -o url=https://s3.nl-ams.scw.cloud -o endpoint=nl-ams -o use_path_request_style -o allow_other
+    # unmount with sudo umount /home/duncan/s3/reactiongame
+  
+  sudo apk add less
+  git config --global core.pager "less -FRX"
+  git config --global color.diff.meta "189"
+  git config --global color.diff.frag "201"

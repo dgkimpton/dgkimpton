@@ -11,15 +11,6 @@ alias unstage='git reset HEAD '
 alias revert='git checkout -- '
 alias tidy='~/dgkimpton/git_prune_local.sh'
 
-if test -f ~/dgkimpton/ssh-key-list; then
-	eval "$(ssh-agent -s)"
-	keys=$(cat ~/dgkimpton/ssh-key-list)
-	for key in $keys
-	do
-		ssh-add "${key/\~/$HOME}"
-	done
-fi
-
 function prep() {
     local rootpath=$(git rev-parse --show-toplevel)
     local branch=$(git rev-parse --abbrev-ref HEAD)
@@ -66,3 +57,72 @@ get_time() {
 
 PS1='\n\[\033[32m\]\u@\h \[\033[33m\]\w\[\033[35m\] `git_parse_branch`\n\[\033[90m\]`get_time`\[\033[32m\]└─▶\[\033[0m\] $ '
 
+
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
+export SCW_DEFAULT_REGION="nl-ams"
+export SCW_DEFAULT_ZONE=nl-ams-1
+
+is_interactive() {
+    # true if shell is interactive
+    case $- in *i*) : ;; *) return 1 ;; esac
+    # also require a real TTY (stdin & stdout)
+    [ -t 0 ] && [ -t 1 ]
+}
+
+as_wet() {
+    CLI_CRED="op://ServiceTokens/CLI-Wet-RW/credential"
+
+    if ! is_interactive; then
+        printf >&2 "Refusing to run: shell is non-interactive (or no TTY)\n"
+    return 2
+    fi
+
+    local OP_BIN="$(command -v op)" || { echo "op not found" >&2; return 127; }
+    case "$OP_BIN" in /usr/bin/op|/usr/local/bin/op) ;; *)
+    echo "Refusing untrusted op at $OP_BIN" >&2; return 1 ;;
+    esac
+
+    eval "$($OP_BIN signin)"
+    local token; token=$($OP_BIN read "$CLI_CRED")
+    $OP_BIN signout
+    unset OP_BIN
+
+    export OP_ACCOUNT_TOKEN="$token"
+}
+
+wenv() {
+  local tok="${OP_SERVICE_ACCOUNT_TOKEN:-${OP_ACCOUNT_TOKEN:-}}"
+                : "${tok:?Set OP_SERVICE_ACCOUNT_TOKEN (or run as_wet first)}"
+  OP_SERVICE_ACCOUNT_TOKEN="$tok" op run --env-file="$1" -- "${@:2}"
+}
+export -f wenv
+
+wread() {
+  local tok="${OP_SERVICE_ACCOUNT_TOKEN:-${OP_ACCOUNT_TOKEN:-}}"
+                : "${tok:?Set OP_SERVICE_ACCOUNT_TOKEN (or run as_wet first)}"
+  OP_SERVICE_ACCOUNT_TOKEN="$tok" op read "$@"
+}
+export -f wread
+
+
+wupdate() {
+  local tok="${OP_SERVICE_ACCOUNT_TOKEN:-${OP_ACCOUNT_TOKEN:-}}"
+                : "${tok:?Set OP_SERVICE_ACCOUNT_TOKEN (or run as_wet first)}"
+  OP_SERVICE_ACCOUNT_TOKEN="$tok" op item edit --vault=wet "$@"
+}
+export -f wupdate
+
+
+as_none() {
+  unset OP_ACCOUNT_TOKEN
+}
+
+
+github() {
+  eval "$(ssh-agent -s)"
+  ssh-add ~/.ssh/github
+}
+
+# Scaleway CLI autocomplete initialization.
+eval "$(scw autocomplete script shell=bash)"
